@@ -38,12 +38,12 @@ public class JwtUtil {
     }
 
     //creating new token after checking a valid user
-    public String generateTokenFromUsername (UserDetails userDetails){
+    public String generateTokenFromUsername(UserDetails userDetails) {
         String username = userDetails.getUsername();
         String token = Jwts.builder().subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpiration))
-                .signWith (key())
+                .signWith(key())
                 .compact();
         return token;
     }
@@ -53,7 +53,7 @@ public class JwtUtil {
     }
 
     //getting the username/ userdetails from a valid bearer token given at user end
-    public String getUserNameFromJwtToken (String token){
+    public String getUserNameFromJwtToken(String token) {
         String username = Jwts.parser()
                 .verifyWith((SecretKey) key())
                 .build().parseSignedClaims(token)
@@ -61,19 +61,19 @@ public class JwtUtil {
         return username;
     }
 
-    public boolean validateJwtToken (String authToekn){
-        try{
+    public boolean validateJwtToken(String authToekn) {
+        try {
             System.out.println("Validating Auth Token");
             Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(authToekn);
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT Token: {} ", e.getMessage());
-        } catch (ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             logger.error("JWT Token is expired: {} ", e.getMessage());
-        } catch (UnsupportedJwtException e){
+        } catch (UnsupportedJwtException e) {
             logger.error("JWT Token is not supported: {} ", e.getMessage());
-        } catch (IllegalArgumentException e){
-            logger.error ("JWT claims string is empty: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            logger.error("JWT claims string is empty: {}", e.getMessage());
         }
         return false;
     }

@@ -1,4 +1,4 @@
-package com.channel_chat_service.Model;
+package com.channel_chat_service.DTO;
 
 
 import com.channel_chat_service.Enum.MessageType;
