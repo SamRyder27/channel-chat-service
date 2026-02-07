@@ -56,6 +56,6 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             logger.error("Cannot authenticate the user {} ", e);
         }
         filterChain.doFilter(request, response);
-       //super.doFilter(request, response, filterChain);
+        //super.doFilter(request, response, filterChain);
     }
 }

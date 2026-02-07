@@ -5,16 +5,17 @@ import com.channel_chat_service.DTO.Users;
 import com.channel_chat_service.Entity.UserEntity;
 import com.channel_chat_service.Repository.UserRepository;
 import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.*;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class AuthServiceImpl implements AuthSerivce, UserDetailsService
-{
+public class AuthServiceImpl implements AuthSerivce, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
