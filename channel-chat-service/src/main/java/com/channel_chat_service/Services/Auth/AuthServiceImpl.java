@@ -1,17 +1,20 @@
 package com.channel_chat_service.Services.Auth;
 
 import com.channel_chat_service.DTO.SignUpUser;
-import com.channel_chat_service.DTO.User;
+import com.channel_chat_service.DTO.Users;
 import com.channel_chat_service.Entity.UserEntity;
 import com.channel_chat_service.Repository.UserRepository;
-import org.springframework.beans.BeanUtils;
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class AuthServiceImpl implements AuthSerivce {
+public class AuthServiceImpl implements AuthSerivce, UserDetailsService
+{
 
     @Autowired
     private UserRepository userRepository;
@@ -21,7 +24,7 @@ public class AuthServiceImpl implements AuthSerivce {
     }
 
     @Override
-    public User createUser(SignUpUser signUpUser) {
+    public Users createUser(SignUpUser signUpUser) {
         UserEntity userE = new UserEntity();
         userE.setName(signUpUser.getName());
         userE.setEmail(signUpUser.getEmail());
@@ -34,6 +37,25 @@ public class AuthServiceImpl implements AuthSerivce {
 
     @Override
     public Boolean presentByEmail(String email) {
-        return userRepository.findFirstByEmail(email) != null;
+        return userRepository.findFirstByEmail(email).isPresent();
     }
+
+    @Override
+    public UserDetails loadUserByUsername(@NonNull String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findFirstByEmail(username)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(
+                                "Email does not exist in the DB: " + username));
+
+        return User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword())
+                .roles("USER")
+                .build();
+    }
+
+//    @Override
+//    public UserDetails updatePassword(UserDetails user, @Nullable String newPassword) {
+//        return null;
+//    }
 }

@@ -1,6 +1,6 @@
 package com.channel_chat_service.Entity;
 
-import com.channel_chat_service.DTO.User;
+import com.channel_chat_service.DTO.Users;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,18 +13,20 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+
+    @Column (unique = true, nullable = false)
     private String email;
     private String password;
     private String phone;
 
-    public User getUser() {
-        User user = new User();
-        user.setEmail(email);
-        user.setName(name);
-        user.setPhone(phone);
-        user.setPassword(password);
+    public Users getUser() {
+        Users users = new Users();
+        users.setEmail(email);
+        users.setName(name);
+        users.setPhone(phone);
+        users.setPassword(password);
 
-        return user;
+        return users;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.channel_chat_service.JwtUtils;
 
+import com.channel_chat_service.DTO.AuthRequest;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

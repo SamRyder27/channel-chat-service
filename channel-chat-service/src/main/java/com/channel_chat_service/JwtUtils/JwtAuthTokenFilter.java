@@ -1,5 +1,6 @@
 package com.channel_chat_service.JwtUtils;
 
+import com.channel_chat_service.Services.Auth.AuthServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,10 +20,13 @@ import java.io.IOException;
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private AuthServiceImpl customAuthService;
 
     @Autowired(required = true)
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
 //    public JwtAuthTokenFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
 //        this.jwtUtil = jwtUtil;
@@ -40,7 +44,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             if (jwtToken != null && jwtUtil.validateJwtToken(jwtToken)) {
                 String username = jwtUtil.getUserNameFromJwtToken(jwtToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                    UserDetails userDetails = customAuthService.loadUserByUsername(username);// authService custom username required?
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                             null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -52,6 +56,6 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             logger.error("Cannot authenticate the user {} ", e);
         }
         filterChain.doFilter(request, response);
-        super.doFilter(request, response, filterChain);
+       //super.doFilter(request, response, filterChain);
     }
 }
