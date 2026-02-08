@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 public class ChatMessageEntity {
-    private  long messageId;
+    private long messageId;
     private String content;
     private String sender;
     private MessageType type;
