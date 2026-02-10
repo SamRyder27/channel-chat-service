@@ -3,7 +3,7 @@ package com.channel_chat_service.Controller;
 
 import com.channel_chat_service.DTO.AuthRequest;
 import com.channel_chat_service.DTO.SignUpUser;
-import com.channel_chat_service.DTO.Users;
+
 import com.channel_chat_service.JwtUtils.JwtUtil;
 import com.channel_chat_service.Services.Auth.AuthSerivce;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ public class AuthController {
         if (authService.presentByEmail((signUpUser.getEmail()))) {
             return new ResponseEntity<>("User already exists, please use a different email", HttpStatus.NOT_ACCEPTABLE);
         }
-        Users createUsers = authService.createUser(signUpUser);
+        SignUpUser createUsers = authService.createUser(signUpUser);
         return new ResponseEntity<>("Saved Succesfully", HttpStatus.OK);
     }
 

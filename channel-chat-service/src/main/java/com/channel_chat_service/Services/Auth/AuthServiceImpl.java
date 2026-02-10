@@ -1,7 +1,7 @@
 package com.channel_chat_service.Services.Auth;
 
 import com.channel_chat_service.DTO.SignUpUser;
-import com.channel_chat_service.DTO.Users;
+
 import com.channel_chat_service.Entity.UserEntity;
 import com.channel_chat_service.Repository.UserRepository;
 import org.jspecify.annotations.NonNull;
@@ -25,7 +25,7 @@ public class AuthServiceImpl implements AuthSerivce, UserDetailsService {
     }
 
     @Override
-    public Users createUser(SignUpUser signUpUser) {
+    public SignUpUser createUser(SignUpUser signUpUser) {
         UserEntity userE = new UserEntity();
         userE.setName(signUpUser.getName());
         userE.setEmail(signUpUser.getEmail());
@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthSerivce, UserDetailsService {
         userE.setPhone(signUpUser.getPhone());
         //BeanUtils.copyProperties(signUpUser, userE);
 
-        return userRepository.save(userE).getUser();
+        return userRepository.save(userE).getSignUpUser();
     }
 
     @Override
